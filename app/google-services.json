@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "824447555830",
+    "project_id": "offlinecrypto-370a5",
+    "storage_bucket": "offlinecrypto-370a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824447555830:android:9b50b4df4de8ff06fa34d7",
+        "android_client_info": {
+          "package_name": "com.example.offline_crypto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824447555830-o31f26bh8om9pahe28dli0eq2n03dfe4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9n3c6IvfRABCOXFt7rdga_L0uJ7Bwk4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824447555830-o31f26bh8om9pahe28dli0eq2n03dfe4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
