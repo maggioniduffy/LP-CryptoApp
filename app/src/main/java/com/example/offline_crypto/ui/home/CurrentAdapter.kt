@@ -54,7 +54,6 @@ class CurrentAdapter (private val data: List<Property>) :
     }
 
     fun setItems(items: List<Property>) {
-        print('s')
         listData = items as MutableList<Property>
         notifyDataSetChanged()
     }

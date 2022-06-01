@@ -117,8 +117,9 @@ class DashboardFragment : Fragment() {
                                 price = aux.elementAt(3) as String,
                                 price_last_week = aux.elementAt(4) as String,
                                 name = aux.elementAt(5) as String,
-                                id = aux.elementAt(6) as String,
-                                selected = true
+                                id = aux.elementAt(7) as String,
+                                selected = true,
+                                ranking = aux.elementAt(6) as String,
                             )
                             Log.d(TAG, "data-: ${prop}")
                             auxlist.add(prop)

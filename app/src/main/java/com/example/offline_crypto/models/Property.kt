@@ -9,6 +9,7 @@ data class Property(
     val price_last_week: String = "",
     var selected: Boolean = true,
     val horizontal: Boolean = false,
+    val ranking: String,
     //val data: List<Property>? = null
 ) {
 //    companion object Factory {

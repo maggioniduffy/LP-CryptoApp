@@ -100,7 +100,7 @@ class HomeFragment() : Fragment() {
             val docRef = db.collection("coins")
             val source = Source.CACHE
             Log.println(Log.ASSERT, "doc", docRef.toString())
-            docRef.get(source).addOnSuccessListener { documents ->
+            docRef.orderBy("ranking").get(source).addOnSuccessListener { documents ->
                 if (documents != null) {
                     binding.recyclerViewCurrent.apply {
                         val auxlist = ArrayList<Property>();
@@ -115,8 +115,9 @@ class HomeFragment() : Fragment() {
                                     price = aux.elementAt(3) as String,
                                     price_last_week = aux.elementAt(4) as String,
                                     name = aux.elementAt(5) as String,
-                                    id = aux.elementAt(6) as String,
-                                    selected = true
+                                    id = aux.elementAt(7) as String,
+                                    selected = true,
+                                    ranking = aux.elementAt(6) as String
                                 )
                                 Log.d(TAG, "data-: ${prop}")
                                 auxlist.add(prop)
