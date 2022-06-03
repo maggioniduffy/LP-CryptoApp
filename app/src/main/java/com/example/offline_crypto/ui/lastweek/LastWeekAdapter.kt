@@ -1,7 +1,6 @@
-package com.example.offline_crypto.ui.dashboard
+package com.example.offline_crypto.ui.lastweek
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -10,12 +9,12 @@ import com.example.offline_crypto.databinding.ListItemBinding
 import com.example.offline_crypto.models.Property
 
 // (private val data: List<Property>)
-class CurrentAdapter (private val data: List<Property>) :
-    RecyclerView.Adapter<CurrentAdapter.CurrentViewHolder>() {
+class LastWeekAdapter (private val data: List<Property>) :
+    RecyclerView.Adapter<LastWeekAdapter.LastWeekViewHolder>() {
 
     private var listData: MutableList<Property> = data as MutableList<Property>
 
-    class CurrentViewHolder(val view: ListItemBinding) : RecyclerView.ViewHolder(view.root) {
+    class LastWeekViewHolder(val view: ListItemBinding) : RecyclerView.ViewHolder(view.root) {
         fun bind(item: Property, index: Int){
             view.tvTitle.text = item.name
             view.tvDescription.text = item.price_last_week
@@ -28,20 +27,20 @@ class CurrentAdapter (private val data: List<Property>) :
                 LinearLayoutManager(view.root.context, LinearLayoutManager.HORIZONTAL, true)
             view.recyclerView.apply {
                 val data = data as MutableList<Property>
-                var myAdapter = CurrentAdapter(data)
+                var myAdapter = LastWeekAdapter(data)
                 layoutManager = manager
                 adapter = myAdapter
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrentViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LastWeekViewHolder {
         val v = LayoutInflater.from(parent.context)
         val listItemBinding = ListItemBinding.inflate(v, parent, false)
-        return CurrentViewHolder(listItemBinding)
+        return LastWeekViewHolder(listItemBinding)
     }
 
-    override fun onBindViewHolder(holder: CurrentViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: LastWeekViewHolder, position: Int) {
         holder.bind(listData[position], position)
     }
 

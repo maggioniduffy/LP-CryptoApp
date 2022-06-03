@@ -1,4 +1,4 @@
-package com.example.offline_crypto.ui.dashboard
+package com.example.offline_crypto.ui.lastweek
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
@@ -12,27 +12,24 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.offline_crypto.databinding.FragmentDashboardBinding
+import com.example.offline_crypto.databinding.FragmentLastweekBinding
 import com.example.offline_crypto.isOnline
-import com.example.offline_crypto.models.Coins
 import com.example.offline_crypto.models.Property
 import com.example.offline_crypto.network.Api
-import com.example.offline_crypto.ui.dashboard.CurrentAdapter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.firestoreSettings
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DashboardFragment : Fragment() {
+class LastWeekFragment : Fragment() {
     lateinit var data: MutableList<Property>
-    private var _binding: FragmentDashboardBinding? = null
+    private var _binding: FragmentLastweekBinding? = null
     private lateinit var manager: RecyclerView.LayoutManager
-    private lateinit var myAdapter: CurrentAdapter
+    private lateinit var myAdapter: LastWeekAdapter;
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -49,7 +46,7 @@ class DashboardFragment : Fragment() {
             isPersistenceEnabled = true
         }
         db.firestoreSettings = settings
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        _binding = FragmentLastweekBinding.inflate(inflater, container, false)
         val root: View = binding.recyclerViewCurrent
         manager = LinearLayoutManager(root.context)
         getAllData()
@@ -68,7 +65,7 @@ class DashboardFragment : Fragment() {
                     if (response.isSuccessful) {
                         binding.recyclerViewCurrent.apply {
                             data = response.body() as MutableList<Property>
-                            myAdapter = CurrentAdapter(data)
+                            myAdapter = LastWeekAdapter(data)
                             layoutManager = manager
                             adapter = myAdapter
                             myAdapter.setItems(data)
@@ -102,7 +99,7 @@ class DashboardFragment : Fragment() {
             val docRef = db.collection("coins")
             val source = Source.CACHE
             Log.println(Log.ASSERT, "doc", docRef.toString())
-            docRef.get(source).addOnSuccessListener { documents ->
+            docRef.orderBy("ranking").get(source).addOnSuccessListener { documents ->
                 if (documents != null) {
                     binding.recyclerViewCurrent.apply {
                         val auxlist = ArrayList<Property>();
@@ -125,7 +122,7 @@ class DashboardFragment : Fragment() {
                             auxlist.add(prop)
                         }
                         data = auxlist as MutableList<Property>
-                        myAdapter = CurrentAdapter(data)
+                        myAdapter = LastWeekAdapter(data)
                         layoutManager = manager
                         adapter = myAdapter
                         myAdapter.setItems(data)
