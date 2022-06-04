@@ -22,3 +22,12 @@
     * Glide, para poder renderizar imagenes con facilidad en la app.
     * Firestore Cloud, como base de datos. Principalemente usada para almacenar datos localmente y 
     que puedan ser accedidos sin conexion a internet.
+      
+### Arquitectura
+
+* Usamos una arquitectura simple, una clase que extiende de Fragment con RecyclerView para cada 
+  pantalla. Cada una con su correspondiente Adapter que lee los datos provistos por ApiService, una
+  clase que consulta la API utilizando Retrofit, los parsea y los muestra en pantalla segun es 
+  necesario. Por cada consulta, guarda una copia de los datos en la base de datos de Firestore y 
+  cuando detecta que el dispositivo no tiene conexion a internet, en vez de llamar a ApiService, 
+  trae los datos directamente desde la copia local.
