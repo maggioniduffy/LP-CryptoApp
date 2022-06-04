@@ -1,6 +1,5 @@
 # Crypto Prices
-## TP4 Laboratorio de Programacion 2021
-### Universidad Nacional del Comahue
+## TP4 Laboratorio de Programacion 2021 | Universidad Nacional del Comahue
 
 * Faustino Maggionin Duffy
 * Lucas Tognozzi
