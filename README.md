@@ -8,5 +8,5 @@
 
 * Crypto Prices es una aplicacion de android nativa que muestra cierta informacion sobre
   las cryptomonedas. Esta informacion es conseguida a traves nuestra API:
-  (https://stormy-citadel-21324.herokuapp.com/api/coins), tambien hecha como un trabajo de esta materia.
+  https://stormy-citadel-21324.herokuapp.com/api/coins, tambien hecha como un trabajo de esta materia.
   A su vez esta API consulta, filtra y devuelve los datos desde Coing Gecko.
