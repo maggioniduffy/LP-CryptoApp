@@ -31,3 +31,10 @@
   necesario. Por cada consulta, guarda una copia de los datos en la base de datos de Firestore y 
   cuando detecta que el dispositivo no tiene conexion a internet, en vez de llamar a ApiService, 
   trae los datos directamente desde la copia local.
+  
+### Ejemplos
+* #### Pantalla de hoy:
+![img.png](img.png)
+
+* #### Pantalla de la semana pasada:
+![img_1.png](img_1.png)
