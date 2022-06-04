@@ -13,3 +13,11 @@
   
 * En la aplicacion tenemos 2 pantallas, la principal muestra los datos (precios) de las monedas al
   dia de la fecha, y la segunda los precios de hace 7 dias. 
+  
+### Librerias
+
+* En Crypto Prices utilizamos las siguientes librerias:
+    * Retrofit, para consultar al backend.
+    * Glide, para poder renderizar imagenes con facilidad en la app.
+    * Firestore Cloud, como base de datos. Principalemente usada para almacenar datos localmente y 
+    que puedan ser accedidos sin conexion a internet.
