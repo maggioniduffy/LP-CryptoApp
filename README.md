@@ -18,6 +18,7 @@
 
 * En Crypto Prices utilizamos las siguientes librerias:
     * Retrofit, para consultar al backend.
+    * Moshi, para representar los datos obtenidos con Retrofit en formato JSON.  
     * Glide, para poder renderizar imagenes con facilidad en la app.
     * Firestore Cloud, como base de datos. Principalemente usada para almacenar datos localmente y 
     que puedan ser accedidos sin conexion a internet.
