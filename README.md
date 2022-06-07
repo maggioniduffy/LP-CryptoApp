@@ -32,7 +32,7 @@
   cuando detecta que el dispositivo no tiene conexion a internet, en vez de llamar a ApiService,
   trae los datos directamente desde la copia local.
 
-- #### Estructura:
+#### Estructura:
 
 ```
   ├── AndroidManifest.xml
