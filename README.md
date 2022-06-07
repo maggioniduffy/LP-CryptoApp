@@ -31,6 +31,76 @@
   necesario. Por cada consulta, guarda una copia de los datos en la base de datos de Firestore y 
   cuando detecta que el dispositivo no tiene conexion a internet, en vez de llamar a ApiService, 
   trae los datos directamente desde la copia local.
+
+* #### Estructura:
+├── AndroidManifest.xml
+├── java
+│   └── com
+│       └── example
+│           └── offline_crypto
+│               ├── MainActivity.kt
+│               ├── models
+│               │   └── Property.kt
+│               ├── network
+│               │   └── ApiService.kt
+│               ├── ui
+│               │   ├── home
+│               │   │   ├── CurrentAdapter.kt
+│               │   │   ├── HomeFragment.kt
+│               │   │   └── HomeViewModel.kt
+│               │   ├── lastweek
+│               │   │   ├── LastWeekAdapter.kt
+│               │   │   ├── LastWeekFragment.kt
+│               │   │   └── LastWeekViewModel.kt
+│               │   └── notifications
+│               │       ├── NotificationsFragment.kt
+│               │       └── NotificationsViewModel.kt
+│               └── Utils.kt
+└── res
+    ├── drawable
+    │   ├── ic_check.xml
+    │   ├── ic_dashboard_black_24dp.xml
+    │   ├── ic_home_black_24dp.xml
+    │   ├── ic_launcher_background.xml
+    │   └── ic_notifications_black_24dp.xml
+    ├── drawable-v24
+    │   └── ic_launcher_foreground.xml
+    ├── layout
+    │   ├── activity_main.xml
+    │   ├── fragment_home.xml
+    │   ├── fragment_lastweek.xml
+    │   ├── fragment_notifications.xml
+    │   └── list_item.xml
+    ├── menu
+    │   └── bottom_nav_menu.xml
+    ├── mipmap-anydpi-v26
+    │   ├── ic_launcher_round.xml
+    │   └── ic_launcher.xml
+    ├── mipmap-hdpi
+    │   ├── ic_launcher_round.webp
+    │   └── ic_launcher.webp
+    ├── mipmap-mdpi
+    │   ├── ic_launcher_round.webp
+    │   └── ic_launcher.webp
+    ├── mipmap-xhdpi
+    │   ├── ic_launcher_round.webp
+    │   └── ic_launcher.webp
+    ├── mipmap-xxhdpi
+    │   ├── ic_launcher_round.webp
+    │   └── ic_launcher.webp
+    ├── mipmap-xxxhdpi
+    │   ├── ic_launcher_round.webp
+    │   └── ic_launcher.webp
+    ├── navigation
+    │   └── mobile_navigation.xml
+    ├── values
+    │   ├── colors.xml
+    │   ├── dimens.xml
+    │   ├── strings.xml
+    │   └── themes.xml
+    └── values-night
+        └── themes.xml
+
   
 ### Ejemplos
 * #### Pantalla de hoy:
