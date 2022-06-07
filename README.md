@@ -33,7 +33,9 @@
   trae los datos directamente desde la copia local.
 
 - #### Estructura:
-  ├── AndroidManifest.xml \n
+
+```
+  ├── AndroidManifest.xml
   ├── java
   │   └── com
   │   └── example
@@ -100,6 +102,7 @@
   │   └── themes.xml
   └── values-night
   └── themes.xml
+```
 
 ## Ejemplos
 
