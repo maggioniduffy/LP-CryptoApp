@@ -1,6 +1,6 @@
 package com.example.offline_crypto.models
 
-data class Property(
+data class Coin(
     val id: String,
     val name: String = "",
     val symbol: String = "",
@@ -10,16 +10,8 @@ data class Property(
     var selected: Boolean = true,
     val horizontal: Boolean = false,
     val ranking: String,
-    //val data: List<Property>? = null
-) {
-//    companion object Factory {
-//        fun create() : FireViewModel = FireViewModel()
-//        var COLLECTION = "device-configs"
-//        var DOCUMENT = "alarme"
-//        var FIELD_userId = "userId"
-//    }
-}
+) {}
 
 data class Coins(
-    val coins: MutableList<Property>
+    val coins: MutableList<Coin>
 )

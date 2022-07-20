@@ -14,10 +14,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
-    // ...
     private lateinit var binding: ActivityMainBinding
-    val db = Firebase.firestore
-
     override fun onCreate(savedInstanceState: Bundle?) {
         StrictMode.setVmPolicy(
             StrictMode.VmPolicy.Builder()
@@ -25,9 +22,6 @@ class MainActivity : AppCompatActivity() {
                 .penaltyLog()
                 .build()
         )
-
-        // this.enablePersistence()
-
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
         super.onCreate(savedInstanceState)
 

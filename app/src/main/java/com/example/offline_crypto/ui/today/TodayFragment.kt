@@ -1,4 +1,4 @@
-package com.example.offline_crypto.ui.lastweek
+package com.example.offline_crypto.ui.today
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
@@ -12,29 +12,29 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.offline_crypto.databinding.FragmentLastweekBinding
+import com.example.offline_crypto.databinding.FragmentHomeBinding
 import com.example.offline_crypto.isOnline
 import com.example.offline_crypto.models.Coin
 import com.example.offline_crypto.network.Api
-import com.example.offline_crypto.ui.today.TodayAdapter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.firestoreSettings
 import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LastWeekFragment : Fragment() {
+class TodayFragment() : Fragment() {
     lateinit var data: MutableList<Coin>
-    private var _binding: FragmentLastweekBinding? = null
+    private var _binding: FragmentHomeBinding? = null
     private lateinit var manager: RecyclerView.LayoutManager
-    private lateinit var myAdapter: LastWeekAdapter;
+    private lateinit var myAdapter: TodayAdapter
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
     private lateinit var db: FirebaseFirestore
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -44,35 +44,24 @@ class LastWeekFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         db = Firebase.firestore
-        val settings = firestoreSettings {
-            isPersistenceEnabled = true
-        }
-        db.firestoreSettings = settings
-        _binding = FragmentLastweekBinding.inflate(inflater, container, false)
-        val root: View = binding.recyclerViewCurrent
-        manager = LinearLayoutManager(root.context)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val view: View = binding.root
+        manager = LinearLayoutManager(view.context)
         getAllData()
-        return root
 
+        return view
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    /*
-    Check if device has connection, if it has, call the API, update the values to render and save a
-    copy in the local memory. If it has not internet, instead of querying the API, it gets the
-    values from the device cache.
-    */
     private fun getAllData() {
         if (isOnline(this.requireContext())) {
-            // Device is online
             this.onlineRender();
         } else {
-            // Device is offline
             this.offlineRender();
         }
     }
 
-    private fun onlineRender() {
+    private fun onlineRender(){
         Api.retrofitService.getAllData().enqueue(object : Callback<List<Coin>> {
             override fun onResponse(
                 call: Call<List<Coin>>,
@@ -81,11 +70,11 @@ class LastWeekFragment : Fragment() {
                 if (response.isSuccessful) {
                     binding.recyclerViewCurrent.apply {
                         data = response.body() as MutableList<Coin>
-                        myAdapter = LastWeekAdapter(data)
+                        myAdapter = TodayAdapter(data)
                         layoutManager = manager
                         adapter = myAdapter
                         myAdapter.setItems(data)
-                        saveOnDatabase();
+                        saveOnDatabase()
                     }
                 }
             }
@@ -116,21 +105,22 @@ class LastWeekFragment : Fragment() {
         }
     }
 
-    private fun offlineRender() {
+    private fun offlineRender(){
+
         val docRef = db.collection("coins")
         val source = Source.CACHE
-        Log.println(Log.ASSERT, "doc", docRef.toString())
         docRef.orderBy("ranking").get(source).addOnSuccessListener { documents ->
             if (documents != null) {
                 binding.recyclerViewCurrent.apply {
-                    val auxlist = getCoinsFromDatabase(documents)
+                    val auxlist = getCoinsFromDatabase(documents);
                     data = auxlist as MutableList<Coin>
-                    myAdapter = LastWeekAdapter(data)
+                    myAdapter = TodayAdapter(data)
                     layoutManager = manager
                     adapter = myAdapter
                     myAdapter.setItems(data)
                 }
-            } else {
+            }
+            else {
                 Log.d(TAG, "No such document")
             }
         }

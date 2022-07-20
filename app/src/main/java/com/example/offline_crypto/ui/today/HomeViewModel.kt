@@ -1,4 +1,4 @@
-package com.example.offline_crypto.ui.home
+package com.example.offline_crypto.ui.today
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

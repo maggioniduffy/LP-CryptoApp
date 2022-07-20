@@ -6,27 +6,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.offline_crypto.databinding.ListItemBinding
-import com.example.offline_crypto.models.Property
+import com.example.offline_crypto.models.Coin
 
-// (private val data: List<Property>)
-class LastWeekAdapter (private val data: List<Property>) :
+class LastWeekAdapter (private val data: List<Coin>) :
     RecyclerView.Adapter<LastWeekAdapter.LastWeekViewHolder>() {
 
-    private var listData: MutableList<Property> = data as MutableList<Property>
+    private var listData: MutableList<Coin> = data as MutableList<Coin>
 
     class LastWeekViewHolder(val view: ListItemBinding) : RecyclerView.ViewHolder(view.root) {
-        fun bind(item: Property, index: Int){
+        fun bind(item: Coin, index: Int){
             view.tvTitle.text = item.name
             view.tvDescription.text = item.price_last_week
 
             Glide.with(view.root.context).load(item.image).centerCrop().into(view.imageView)
         }
 
-        fun bindRecyclerView(data: List<Property>) {
+        fun bindRecyclerView(data: List<Coin>) {
             val manager: RecyclerView.LayoutManager =
                 LinearLayoutManager(view.root.context, LinearLayoutManager.HORIZONTAL, true)
             view.recyclerView.apply {
-                val data = data as MutableList<Property>
+                val data = data as MutableList<Coin>
                 var myAdapter = LastWeekAdapter(data)
                 layoutManager = manager
                 adapter = myAdapter
@@ -48,9 +47,9 @@ class LastWeekAdapter (private val data: List<Property>) :
         return listData.size
     }
 
-    fun setItems(items: List<Property>) {
+    fun setItems(items: List<Coin>) {
         print('s')
-        listData = items as MutableList<Property>
+        listData = items as MutableList<Coin>
         notifyDataSetChanged()
     }
 }

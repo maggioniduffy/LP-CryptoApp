@@ -1,6 +1,6 @@
 package com.example.offline_crypto.network
 
-import com.example.offline_crypto.models.Property
+import com.example.offline_crypto.models.Coin
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
@@ -15,13 +15,13 @@ private val retrofit = Retrofit.Builder().addConverterFactory(MoshiConverterFact
     BASE_URL
 ).build()
 
-interface ApiService{
-
+interface ApiService {
+    //TODO Paginate
     @GET("api/coins?from=0&to=100")
-    fun getAllData(): Call<List<Property>>
+    fun getAllData(): Call<List<Coin>>
 
 }
 
 object Api {
-    val retrofitService: ApiService by lazy{ retrofit.create(ApiService::class.java)}
+    val retrofitService: ApiService by lazy {retrofit.create(ApiService::class.java)}
 }
