@@ -1,13 +1,13 @@
-package com.example.offline_crypto.ui.notifications
+package com.example.offline_crypto.ui.addcoin
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class NotificationsViewModel : ViewModel() {
+class AddcoinViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+        value = "This is add coin Fragment"
     }
     val text: LiveData<String> = _text
 }

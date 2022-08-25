@@ -2,5 +2,5 @@
     <string name="app_name">offline_crypto</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Last Week</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_addcoin">Add Coin</string>
 </resources>

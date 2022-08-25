@@ -7,6 +7,7 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 private const val BASE_URL = "https://stormy-citadel-21324.herokuapp.com/"
 
@@ -20,7 +21,10 @@ interface ApiService {
     @GET("api/coins?from=0&to=100")
     fun getAllData(): Call<List<Coin>>
 
+    @POST("api/coins")
+    fun addCoin(): Call<Coin>
 }
+
 
 object Api {
     val retrofitService: ApiService by lazy {retrofit.create(ApiService::class.java)}

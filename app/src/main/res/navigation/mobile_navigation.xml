@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_lastweek" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.offline_crypto.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_addcoin"
+        android:name="com.example.offline_crypto.ui.addcoin.AddcoinFragment"
+        android:label="@string/title_addcoin"
+        tools:layout="@layout/fragment_addcoin" />
 </navigation>
