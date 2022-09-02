@@ -4,7 +4,7 @@ data class Coin(
     val id: String,
     val name: String = "",
     val symbol: String = "",
-    val image: String = "",
+    var image: String = "",
     val price: String = "",
     val price_last_week: String = "",
     var selected: Boolean = true,

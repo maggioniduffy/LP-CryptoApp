@@ -70,6 +70,7 @@ class TodayFragment() : Fragment() {
                 if (response.isSuccessful) {
                     binding.recyclerViewCurrent.apply {
                         data = response.body() as MutableList<Coin>
+                        checkImage(data);
                         myAdapter = TodayAdapter(data)
                         layoutManager = manager
                         adapter = myAdapter
@@ -83,6 +84,14 @@ class TodayFragment() : Fragment() {
                 t.printStackTrace()
             }
         })
+    }
+
+    private fun checkImage(coins: MutableList<Coin>){
+        for (coin in coins) {
+            if(coin.image == "" || coin.image == null) {
+                coin.image = "app/src/main/res/mipmap-xhdpi/default_coin.png";
+            }
+        }
     }
 
     private fun saveOnDatabase() {
