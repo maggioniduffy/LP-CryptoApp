@@ -3,7 +3,6 @@
 ## TP4 Laboratorio de Programacion 2021 | Universidad Nacional del Comahue
 
 - Faustino Maggionin Duffy
-- Lucas Tognozzi
 
 ### Introduccion
 
@@ -11,8 +10,8 @@
   las cryptomonedas. Esta informacion es conseguida a traves nuestra API:
   https://stormy-citadel-21324.herokuapp.com/api/coins, tambien hecha como un trabajo de esta materia.
   A su vez esta API consulta, filtra y devuelve los datos desde Coing Gecko.
-- En la aplicacion tenemos 2 pantallas, la principal muestra los datos (precios) de las monedas al
-  dia de la fecha, y la segunda los precios de hace 7 dias.
+- En la aplicacion tenemos 3 pantallas, la principal muestra los datos (precios) de las monedas al
+  dia de la fecha, la segunda los precios de hace 7 dias y la tercera nos permite agregar nuestra propia moneda a la aplicacion.
 
 ### Librerias
 
@@ -35,73 +34,35 @@
 #### Estructura:
 
 ```
-  ├── AndroidManifest.xml
-  ├── java
-  │   └── com
-  │   └── example
-  │   └── offline_crypto
-  │   ├── MainActivity.kt
-  │   ├── models
-  │   │   └── Property.kt
-  │   ├── network
-  │   │   └── ApiService.kt
-  │   ├── ui
-  │   │   ├── home
-  │   │   │   ├── CurrentAdapter.kt
-  │   │   │   ├── HomeFragment.kt
-  │   │   │   └── HomeViewModel.kt
-  │   │   ├── lastweek
-  │   │   │   ├── LastWeekAdapter.kt
-  │   │   │   ├── LastWeekFragment.kt
-  │   │   │   └── LastWeekViewModel.kt
-  │   │   └── notifications
-  │   │   ├── NotificationsFragment.kt
-  │   │   └── NotificationsViewModel.kt
-  │   └── Utils.kt
-  └── res
-  ├── drawable
-  │   ├── ic_check.xml
-  │   ├── ic_dashboard_black_24dp.xml
-  │   ├── ic_home_black_24dp.xml
-  │   ├── ic_launcher_background.xml
-  │   └── ic_notifications_black_24dp.xml
-  ├── drawable-v24
-  │   └── ic_launcher_foreground.xml
+  └── com
+    └── example
+        └── offline_crypto
+            ├── EndlessRecyclerViewScrollListener.kt
+            ├── MainActivity.kt
+            ├── models
+            │   └── Coin.kt
+            ├── network
+            │   └── ApiService.kt
+            ├── ui
+            │   ├── addcoin
+            │   │   ├── AddcoinFragment.kt
+            │   │   └── AddcoinViewModel.kt
+            │   ├── lastweek
+            │   │   ├── LastWeekAdapter.kt
+            │   │   ├── LastWeekFragment.kt
+            │   │   └── LastWeekViewModel.kt
+            │   └── today
+            │       ├── HomeViewModel.kt
+            │       ├── TodayAdapter.kt
+            │       └── TodayFragment.kt
+            └── Utils.kt
   ├── layout
-  │   ├── activity_main.xml
-  │   ├── fragment_home.xml
-  │   ├── fragment_lastweek.xml
-  │   ├── fragment_notifications.xml
-  │   └── list_item.xml
-  ├── menu
-  │   └── bottom_nav_menu.xml
-  ├── mipmap-anydpi-v26
-  │   ├── ic_launcher_round.xml
-  │   └── ic_launcher.xml
-  ├── mipmap-hdpi
-  │   ├── ic_launcher_round.webp
-  │   └── ic_launcher.webp
-  ├── mipmap-mdpi
-  │   ├── ic_launcher_round.webp
-  │   └── ic_launcher.webp
-  ├── mipmap-xhdpi
-  │   ├── ic_launcher_round.webp
-  │   └── ic_launcher.webp
-  ├── mipmap-xxhdpi
-  │   ├── ic_launcher_round.webp
-  │   └── ic_launcher.webp
-  ├── mipmap-xxxhdpi
-  │   ├── ic_launcher_round.webp
-  │   └── ic_launcher.webp
-  ├── navigation
-  │   └── mobile_navigation.xml
-  ├── values
-  │   ├── colors.xml
-  │   ├── dimens.xml
-  │   ├── strings.xml
-  │   └── themes.xml
-  └── values-night
-  └── themes.xml
+│   ├── activity_main.xml
+│   ├── fragment_addcoin.xml
+│   ├── fragment_home.xml
+│   ├── fragment_lastweek.xml
+│   └── list_item.xml
+
 ```
 
 ## Ejemplos
