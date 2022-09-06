@@ -16,7 +16,7 @@ class LastWeekAdapter (private val data: List<Coin>) :
     class LastWeekViewHolder(val view: ListItemBinding) : RecyclerView.ViewHolder(view.root) {
         fun bind(item: Coin, index: Int){
             view.tvTitle.text = item.name
-            view.tvDescription.text = item.price_last_week
+            view.tvDescription.text = "$${item.price_last_week}"
 
             Glide.with(view.root.context).load(item.image).centerCrop().into(view.imageView)
         }
@@ -48,8 +48,19 @@ class LastWeekAdapter (private val data: List<Coin>) :
     }
 
     fun setItems(items: List<Coin>) {
-        print('s')
         listData = items as MutableList<Coin>
         notifyDataSetChanged()
+    }
+
+    fun addItems(items: List<Coin>) {
+        var start = listData.size;
+        var count = 0;
+        var auxItems = items.subList(start,items.size);
+        for (item: Coin in auxItems) {
+            println(item.name)
+            listData.add(item);
+            count++;
+        }
+        notifyItemRangeInserted(start, count);
     }
 }

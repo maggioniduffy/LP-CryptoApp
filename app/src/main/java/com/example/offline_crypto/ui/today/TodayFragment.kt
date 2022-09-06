@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.offline_crypto.EndlessRecyclerViewScrollListener
 import com.example.offline_crypto.databinding.FragmentHomeBinding
 import com.example.offline_crypto.isOnline
 import com.example.offline_crypto.models.Coin
@@ -24,6 +25,8 @@ import com.google.firebase.ktx.Firebase
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.reflect.jvm.internal.impl.builtins.StandardNames.FqNames.target
+
 
 class TodayFragment() : Fragment() {
     lateinit var data: MutableList<Coin>
@@ -37,6 +40,9 @@ class TodayFragment() : Fragment() {
 
     private lateinit var db: FirebaseFirestore
 
+    private var offset = 10;
+    private lateinit var scrollListener: EndlessRecyclerViewScrollListener;
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,24 +51,30 @@ class TodayFragment() : Fragment() {
     ): View {
         db = Firebase.firestore
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val view: View = binding.root
+        val view: RecyclerView = binding.root
         manager = LinearLayoutManager(view.context)
-        getAllData()
-
+        getAllData(0, offset, true)
+        scrollListener = object : EndlessRecyclerViewScrollListener(manager as LinearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                getAllData(0, (page + 1) * offset, false)
+            }
+        }
+        view.addOnScrollListener(scrollListener)
         return view
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun getAllData() {
+    private fun getAllData(from: Int, to: Int, init: Boolean) {
         if (isOnline(this.requireContext())) {
-            this.onlineRender();
+            this.onlineRender(from as Integer, to as Integer, init);
         } else {
-            this.offlineRender();
+            this.offlineRender(from, to, init);
         }
     }
 
-    private fun onlineRender(){
-        Api.retrofitService.getAllData().enqueue(object : Callback<List<Coin>> {
+
+    private fun onlineRender(from: Integer, to: Integer, init: Boolean){
+        Api.retrofitService.getAllData(from, to).enqueue(object : Callback<List<Coin>> {
             override fun onResponse(
                 call: Call<List<Coin>>,
                 response: Response<List<Coin>>
@@ -70,11 +82,18 @@ class TodayFragment() : Fragment() {
                 if (response.isSuccessful) {
                     binding.recyclerViewCurrent.apply {
                         data = response.body() as MutableList<Coin>
-                        checkImage(data);
-                        myAdapter = TodayAdapter(data)
-                        layoutManager = manager
-                        adapter = myAdapter
-                        myAdapter.setItems(data)
+                        checkImage(data)
+                        println(init)
+                        if (init) {
+                            myAdapter = TodayAdapter(data)
+                            myAdapter.setItems(data);
+                            layoutManager = manager
+                            adapter = myAdapter
+                            println("dataset changed")
+                        } else {
+                            myAdapter.addItems(data);
+                            println("item range inserted")
+                        }
                         saveOnDatabase()
                     }
                 }
@@ -89,7 +108,7 @@ class TodayFragment() : Fragment() {
     private fun checkImage(coins: MutableList<Coin>){
         for (coin in coins) {
             if(coin.image == "" || coin.image == null) {
-                coin.image = "app/src/main/res/mipmap-xhdpi/default_coin.png";
+                coin.image = "https://i.ibb.co/Sf6c4vS/default-coin-round.png";
             }
         }
     }
@@ -114,19 +133,23 @@ class TodayFragment() : Fragment() {
         }
     }
 
-    private fun offlineRender(){
+    private fun offlineRender(from: Int, to: Int, init: Boolean){
 
         val docRef = db.collection("coins")
         val source = Source.CACHE
-        docRef.orderBy("ranking").get(source).addOnSuccessListener { documents ->
+        docRef.orderBy("ranking").startAt(from).endAt(to).get(source).addOnSuccessListener { documents ->
             if (documents != null) {
                 binding.recyclerViewCurrent.apply {
                     val auxlist = getCoinsFromDatabase(documents);
                     data = auxlist as MutableList<Coin>
-                    myAdapter = TodayAdapter(data)
-                    layoutManager = manager
-                    adapter = myAdapter
-                    myAdapter.setItems(data)
+                    if (init) {
+                        myAdapter = TodayAdapter(data)
+                        layoutManager = manager
+                        adapter = myAdapter
+                        myAdapter.setItems(data)
+                    } else {
+                        myAdapter.addItems(data);
+                    }
                 }
             }
             else {

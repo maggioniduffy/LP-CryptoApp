@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.offline_crypto.EndlessRecyclerViewScrollListener
 import com.example.offline_crypto.databinding.FragmentLastweekBinding
 import com.example.offline_crypto.isOnline
 import com.example.offline_crypto.models.Coin
@@ -36,7 +37,8 @@ class LastWeekFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var db: FirebaseFirestore
-
+    private var offset = 10;
+    private lateinit var scrollListener: EndlessRecyclerViewScrollListener;
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,31 +51,29 @@ class LastWeekFragment : Fragment() {
         }
         db.firestoreSettings = settings
         _binding = FragmentLastweekBinding.inflate(inflater, container, false)
-        val root: View = binding.recyclerViewCurrent
-        manager = LinearLayoutManager(root.context)
-        getAllData()
-        return root
-
+        val view: RecyclerView = binding.root
+        manager = LinearLayoutManager(view.context)
+        getAllData(0, offset, true)
+        scrollListener = object : EndlessRecyclerViewScrollListener(manager as LinearLayoutManager) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                getAllData(0, (page + 1) * offset, false)
+            }
+        }
+        view.addOnScrollListener(scrollListener)
+        return view
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    /*
-    Check if device has connection, if it has, call the API, update the values to render and save a
-    copy in the local memory. If it has not internet, instead of querying the API, it gets the
-    values from the device cache.
-    */
-    private fun getAllData() {
+    private fun getAllData(from: Int, to: Int, init: Boolean) {
         if (isOnline(this.requireContext())) {
-            // Device is online
-            this.onlineRender();
+            this.onlineRender(from as Integer, to as Integer, init);
         } else {
-            // Device is offline
-            this.offlineRender();
+            this.offlineRender(from, to, init);
         }
     }
 
-    private fun onlineRender() {
-        Api.retrofitService.getAllData().enqueue(object : Callback<List<Coin>> {
+    private fun onlineRender(from: Integer, to: Integer, init: Boolean){
+        Api.retrofitService.getAllData(from, to).enqueue(object : Callback<List<Coin>> {
             override fun onResponse(
                 call: Call<List<Coin>>,
                 response: Response<List<Coin>>
@@ -81,11 +81,19 @@ class LastWeekFragment : Fragment() {
                 if (response.isSuccessful) {
                     binding.recyclerViewCurrent.apply {
                         data = response.body() as MutableList<Coin>
-                        myAdapter = LastWeekAdapter(data)
-                        layoutManager = manager
-                        adapter = myAdapter
-                        myAdapter.setItems(data)
-                        saveOnDatabase();
+                        checkImage(data)
+                        println(init)
+                        if (init) {
+                            myAdapter = LastWeekAdapter(data)
+                            myAdapter.setItems(data);
+                            layoutManager = manager
+                            adapter = myAdapter
+                            println("dataset changed")
+                        } else {
+                            myAdapter.addItems(data);
+                            println("item range inserted")
+                        }
+                        saveOnDatabase()
                     }
                 }
             }
@@ -94,6 +102,14 @@ class LastWeekFragment : Fragment() {
                 t.printStackTrace()
             }
         })
+    }
+
+    private fun checkImage(coins: MutableList<Coin>){
+        for (coin in coins) {
+            if(coin.image == "" || coin.image == null) {
+                coin.image = "https://i.ibb.co/Sf6c4vS/default-coin-round.png";
+            }
+        }
     }
 
     private fun saveOnDatabase() {
@@ -116,19 +132,23 @@ class LastWeekFragment : Fragment() {
         }
     }
 
-    private fun offlineRender() {
+    private fun offlineRender(from: Int, to: Int, init: Boolean) {
         val docRef = db.collection("coins")
         val source = Source.CACHE
         Log.println(Log.ASSERT, "doc", docRef.toString())
-        docRef.orderBy("ranking").get(source).addOnSuccessListener { documents ->
+        docRef.orderBy("ranking").startAt(from).endAt(to).get(source).addOnSuccessListener { documents ->
             if (documents != null) {
                 binding.recyclerViewCurrent.apply {
                     val auxlist = getCoinsFromDatabase(documents)
                     data = auxlist as MutableList<Coin>
-                    myAdapter = LastWeekAdapter(data)
-                    layoutManager = manager
-                    adapter = myAdapter
-                    myAdapter.setItems(data)
+                    if (init) {
+                        myAdapter = LastWeekAdapter(data)
+                        layoutManager = manager
+                        adapter = myAdapter
+                        myAdapter.setItems(data)
+                    } else {
+                        myAdapter.addItems(data)
+                    }
                 }
             } else {
                 Log.d(TAG, "No such document")
@@ -163,4 +183,14 @@ class LastWeekFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+}
+
+interface OnScrollChangeListener {
+    abstract fun onScrollChange(
+        v: View,
+        scrollX: Int,
+        scrollY: Int,
+        oldScrollX: Int,
+        oldScrollY: Int
+    ): Unit
 }

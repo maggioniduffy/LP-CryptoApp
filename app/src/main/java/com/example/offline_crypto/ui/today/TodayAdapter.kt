@@ -13,10 +13,11 @@ class TodayAdapter (private val data: List<Coin>) :
 
     private var listData: MutableList<Coin> = data as MutableList<Coin>
 
+
     class CurrentViewHolder(val view: ListItemBinding) : RecyclerView.ViewHolder(view.root) {
         fun bind(item: Coin, index: Int) {
             view.tvTitle.text = item.name
-            view.tvDescription.text = item.price
+            view.tvDescription.text = "$${item.price}"
 
             Glide.with(view.root.context).load(item.image).centerCrop().into(view.imageView)
         }
@@ -50,5 +51,17 @@ class TodayAdapter (private val data: List<Coin>) :
     fun setItems(items: List<Coin>) {
         listData = items as MutableList<Coin>
         notifyDataSetChanged()
+    }
+
+    fun addItems(items: List<Coin>) {
+        var start = listData.size;
+        var count = 0;
+        var auxItems = items.subList(start,items.size);
+        for (item: Coin in auxItems) {
+            println(item.name)
+            listData.add(item);
+            count++;
+        }
+        notifyItemRangeInserted(start, count);
     }
 }
